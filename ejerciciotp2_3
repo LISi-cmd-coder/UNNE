@@ -1,0 +1,228 @@
+/*El departamento de alumnado necesita trabajar con los datos de los alumnos de la materia AEDII, para
+ello implementa una lista simplemente enlazada, donde cada nodo guarda el número de libreta
+universitaria y el nombre del alumno. Se pide crear las funciones necesarias para:
+a) Generar la lista.  void iniciarLista();
+b) Insertar el primer alumno (nodo) de la lista. void insertarPrimerAlumn( tAlumno );
+c) Insertar alumnos al principio de la lista.   void insertarAdelante( tAlumno );
+d) Eliminar el primer alumno de la lista.   void eliminarPrimerALumn();
+e) Insertar un alumno en una determinada posición dentro de la lista.   void insertarK( int k, tAlumno);
+f) Eliminar un alumno de una determinada posición de la lista.   void eliminarK(int k) ;
+g) Visualizar todos los datos de los alumnos que están en la lista.   void visualizarElementos( tLista * );
+Además, crear una función que retorne la cantidad de alumnos que contiene   la lista (int contador(tLista*))e implementar un
+menú principal que contenga todos los ítems anteriormente solicitados.*/
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#define max 30
+typedef char tString[max];
+typedef struct
+{
+   int numLibreta;
+   tString nombre;
+}tAlumno;
+typedef struct nodo
+{
+    tAlumno alumno;
+    struct nodo * siguente;
+}tLista;
+
+tLista * lista;
+int contador=0;
+  void iniciarLista();
+  bool listaVacia(tLista*);
+  void insertarPrimerAlumn( tAlumno );
+  void insertarAdelante( tAlumno );
+  void insertarElemento( tAlumno );
+  void insertarK( int , tAlumno);
+  void eliminarPrimerALumn();
+  void eliminarK(int) ;
+  void visualizarElementos( tLista * ); 
+  int contar(tLista*);
+//menu
+void menu()
+{
+    int opcion;
+    int location;
+    tAlumno  aux;
+    system("cls");
+    printf("\n*** OPCIONES***\n");
+    printf("1- Agregar Alumno  2- Eliminar Alumno 3- Mostrar Alumnos\n");
+	printf("4- Lista vacia? 5-Insertar un alumno en una determinada posicion dentro de la lista \n");	
+    printf("6-Eliminar un alumno de una determinada posicion de la lista\n");
+    printf("7-ver cantidad de alumnos 0-salir\n");
+
+    printf("opcion:");
+    scanf("%d",&opcion); fflush(stdin);
+    switch (opcion)
+    {
+    case 1:
+       printf("Ingrese el nombre del alumno:");
+       scanf("%s",&aux.nombre);
+       printf("Ingrese el numero de libreta: ");
+       scanf("%d",&aux.numLibreta);
+       insertarElemento(aux);
+       printf("\n");
+       system("pause");
+       menu();
+        break;
+    case 2:
+    eliminarPrimerALumn();
+	system("pause");
+	menu();	
+        break;
+    case 3:
+    visualizarElementos(lista);
+    printf("\n");
+   	system("pause");
+	menu();	
+        break;
+    case 4:
+   	printf("Lista vacia? %s\n", listaVacia( lista ) ? "si" : "no");	
+    printf("\n");
+    system("pause");
+	menu();	
+       break;
+    case 5:
+    printf("ingrese la posicion donde quiere insertar: \n");
+    scanf("%d",& location);
+     insertarK( location ,aux);
+     printf("\n");
+      system("pause");
+    	menu();	
+        break;
+
+    case 6:
+    printf("ingrese la posicion donde quiere eliminar: \n");
+    scanf("%d",& location);
+     eliminarK(location) ;
+    printf("\n");
+    system("pause");
+    	menu();	
+        break;
+    case 7:
+      contar(lista);
+      system("pause");
+    	menu();	
+    case 0:
+	printf("PROGRAMA FINALIZADO.\n");			
+		break;
+	
+    }
+    
+}
+
+
+int main()
+{
+   
+    menu();
+    return 0;
+}
+  void iniciarLista()
+  {
+    lista=NULL;
+    printf("lista iniciada...\n");
+  }
+    bool listaVacia(tLista* pLista)
+    {
+     return (pLista==NULL);
+    }
+ void insertarPrimerAlumn( tAlumno pAlumno )
+ {
+   tLista * nuevoNodo;
+   nuevoNodo=(tLista*)malloc(sizeof(tLista));
+   nuevoNodo->alumno=pAlumno;
+   nuevoNodo->siguente=NULL;
+   lista=nuevoNodo;
+   printf("Nombre: %s-LU N°: %d\n",nuevoNodo->alumno.nombre,nuevoNodo->alumno.numLibreta);
+ }
+   void insertarAdelante( tAlumno pAlumno )
+ {
+  tLista *nuevoNodo;
+  nuevoNodo=(tLista*)malloc(sizeof(tLista));
+  nuevoNodo->alumno=pAlumno;
+  nuevoNodo->siguente=lista;
+  lista=nuevoNodo;
+ }
+   void insertarElemento( tAlumno pAlumno )
+ {
+  if (listaVacia(lista))
+  {
+     insertarPrimerAlumn(pAlumno);
+  }else
+  {
+    insertarAdelante(pAlumno);
+  }
+ }
+   void insertarK( int k, tAlumno pAlumno)
+ {
+    tLista * nuevoNodo,*aux;
+    int i;
+    aux=lista;
+    for ( i = 1; i < k-1; i++)
+    {
+        aux = aux->siguente;
+    }
+    nuevoNodo=(tLista*)malloc(sizeof(tLista));
+    nuevoNodo->alumno=pAlumno;
+    nuevoNodo->siguente=aux->siguente;
+    aux->siguente=nuevoNodo;
+    printf("Elemento insertado en la posicion %d!\n", k);
+ }
+   void eliminarPrimerALumn()
+ {
+    tLista* nodoSupr;
+    nodoSupr=lista;
+    lista=lista->siguente;
+    free(nodoSupr);
+    nodoSupr=NULL;
+ }
+  void eliminarK(int k)
+{
+    tLista*nodoSupr,*aux;
+    int i;
+    aux=lista;
+    for ( i = 1; i < k-1; i++)
+    {
+        aux=aux->siguente;
+    }
+    nodoSupr->siguente=aux->siguente;
+    aux->siguente=nodoSupr->siguente;
+    free(nodoSupr);
+    nodoSupr=NULL;
+}
+  void visualizarElementos( tLista * pLista )
+{
+  tLista* aux;
+  aux = pLista;
+ if (listaVacia(aux))
+ {
+     printf("no hay elementos para mostrar");
+ }else
+ {
+    while (aux!=NULL)
+    {
+       printf("name:%s,LU N°%d",aux->alumno.nombre,aux->alumno.numLibreta);
+       aux=aux->siguente;
+    }  
+ }
+}
+  int contar(tLista* pLista)
+{
+  tLista* aux;
+  aux = pLista;
+ if (listaVacia(aux))
+ {
+     printf("no hay elementos para mostrar");
+ }else
+ {
+    while (aux!=NULL)
+    {
+       contador++;
+       aux=aux->siguente;
+    }  
+ }
+ return contador;
+} 
+  
