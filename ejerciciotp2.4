@@ -1,0 +1,165 @@
+/*Un Instituto médico realiza una encuesta sobre nutrición. Para procesar los datos de los encuestados
+requiere un sistema, que implemente una lista enlazada. Para ello se capturan los siguientes datos: código
+de sexo (F. Femenino, M. Masculino), código de rango de edad (01. Menor de 15 años, 02. Entre 15 y 30
+años, 03. Más de 30 años), peso y altura. El sistema debe calcular el IMC (índice de masa corporal) antes
+de insertar un elemento en la lista, y almacenar la clasificación del IMC (string) como parte contenida de
+cada nodo.
+Se solicita realizar las funciones necesarias para que los usuarios del sistema puedan obtener los
+siguientes informes:
+a) La cantidad total de encuestados.
+b) El promedio de pesos de las personas de peso bajo, que sean menores de 15 años.
+c) Un listado de los datos correspondientes a las personas que tienen sobrepeso*/
+#include <stdio.h> 
+#include <string.h>
+#include <stdbool.h>
+#include <stdlib.h>
+
+typedef char tString[20];
+
+typedef struct
+{
+  char codSex;
+  int edad;
+  float altura,peso;
+  tString clasifIMC;
+}tDatos;
+
+typedef struct nodo{
+    tDatos datos;
+    struct nodo*siguente;
+}tLista;
+tLista * lista;
+
+int contador=0;
+
+
+void inicializarLista();
+void ingresarPaciente(tDatos);
+void insertarPrimero(tDatos);
+void insertarDelante(tDatos);
+
+void ingresarDatos();
+void mostrarDatos();
+
+void ContarTotalEncuentados();
+
+float calcularelIMC(tDatos);
+void promedioPesoMenores(tLista*);
+void promedioSobrePeso(tLista*);
+int encuestados=0;
+
+float calcularIMC(tDatos pDato);
+
+
+int main()
+{
+    char continuar='s';
+   	do{
+		ingresarDatos();
+		ContarTotalEncuentados();
+		
+		preguntarContinuar();
+	}
+	while(continuar == 'S'|| continuar == 's');
+    promedioPeso();
+    personasSobrepeso();
+    return 0;
+}
+
+
+//implementacion
+void inicializarLista()
+{
+    lista=NULL;
+}
+
+void ingresarPaciente(tDatos pDato)
+{
+    if(listaVacia(lista))
+    {
+        ingresarPrimero(pDato);
+        calcularelIMC(pDato);
+    }else
+    {
+        insertarDelante(pDato);
+        calcularelIMC(pDato);
+    }
+   
+}
+
+void insertarPrimero(tDatos pDato)
+{
+   tLista * nuevoNodo;
+   nuevoNodo=(tLista*)malloc(sizeof(tLista));
+   nuevoNodo->datos=pDato;
+   nuevoNodo->siguente=NULL;
+   lista=nuevoNodo;
+}
+
+void insertarDelante(tDatos pDato)
+{
+    tLista*nuevoNodo;
+    nuevoNodo=(tLista*)malloc(sizeof(tLista));
+    nuevoNodo->datos=pDato;
+    nuevoNodo->siguente=lista;
+    lista=nuevoNodo;
+}
+bool listaVacia(tLista* pLista)
+{
+ return (pLista==NULL);
+}
+void visualizarLista(tLista* pLista)
+{
+    tLista* aux;
+    aux=pLista;
+    if(!listaVacia(pLista)){
+         while(aux!=NULL)
+    {
+        printf("codSex:%c|IMC:%s|edad: %d| altura:%f| peso:%f|\n",aux->datos.codSex,aux->datos.clasifIMC,aux->datos.edad,aux->datos.altura,aux->datos.peso);
+    }
+  }
+   
+};
+
+float calcularIMC(tDatos pDato)
+{
+   float imc;
+   float alturaAlcuadrado;
+   alturaAlcuadrado=pow(pDato.altura,2);
+   imc = (pDato.peso/alturaAlcuadrado);
+   
+   if(imc < 20){
+
+    strcpy(pDato.clasifIMC, "peso bajo"); 
+   }else{
+     if(imc >= 19 && imc <= 25){
+      strcpy(pDato.clasifIMC, "peso medio"); 
+    }else{
+        if(imc >= 24 && imc <= 25)
+    strcpy(pDato.clasifIMC, "sobre peso"); 
+   }  
+  } 
+}
+void promedioPesoMenores(tLista* pLista)
+{
+    int contador=0;
+    float pesoTotal=0;
+    tLista * aux;
+    aux=pLista;
+   if (listaVacia(aux))
+   {
+     printf("error!");
+   }else
+   {
+    while (aux!=NULL)
+    {
+        if (aux->datos.edad==15 && )
+        {
+            /* code */
+        }
+        
+    }
+    
+   }
+   
+}
