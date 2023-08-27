@@ -51,13 +51,8 @@ void ingresarDatos();
 
 tListaProductos data;
 
-char continuar;
 int main()
 {
- 
-
-  
-
  return 0;
 }
 
