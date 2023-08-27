@@ -41,28 +41,32 @@ void insertarDelante(tDatos);
 void ingresarDatos();
 void mostrarDatos();
 
-void ContarTotalEncuentados();
+void ContarTotalEncuentados(tLista*);
 
 float calcularelIMC(tDatos);
 void promedioPesoMenores(tLista*);
-void promedioSobrePeso(tLista*);
-int encuestados=0;
+void listadoSobrePeso(tLista*);
 
-float calcularIMC(tDatos pDato);
+void calcularPromedio(float,int);
 
 
+void clasificarIMC(tDatos pDato);
+
+
+tDatos dato;
 int main()
 {
     char continuar='s';
    	do{
 		ingresarDatos();
-		ContarTotalEncuentados();
-		
-		preguntarContinuar();
+		ingresarPaciente(dato);
+        ContarTotalEncuentados(lista);
+	printf("desea continuar? s-si || n-no");
+    scanf("%c",&continuar);
 	}
 	while(continuar == 'S'|| continuar == 's');
-    promedioPeso();
-    personasSobrepeso();
+    promedioPesoMenores(lista);
+    listadoSobrePeso(lista);
     return 0;
 }
 
@@ -121,7 +125,7 @@ void visualizarLista(tLista* pLista)
    
 };
 
-float calcularIMC(tDatos pDato)
+void clasificarIMC(tDatos pDato)
 {
    float imc;
    float alturaAlcuadrado;
@@ -129,7 +133,6 @@ float calcularIMC(tDatos pDato)
    imc = (pDato.peso/alturaAlcuadrado);
    
    if(imc < 20){
-
     strcpy(pDato.clasifIMC, "peso bajo"); 
    }else{
      if(imc >= 19 && imc <= 25){
@@ -153,13 +156,59 @@ void promedioPesoMenores(tLista* pLista)
    {
     while (aux!=NULL)
     {
-        if (aux->datos.edad==15 && )
+        if (aux->datos.edad==15 && aux->datos.clasifIMC=='peso bajo')
         {
-            /* code */
+            pesoTotal+=aux->datos.peso;
+            contador++;
         }
-        
+         aux=aux->siguente;
     }
-    
+      
    }
-   
+   calcularPromedio(pesoTotal,contador);
 }
+void listadoSobrePeso(tLista * pLista)
+{
+    tLista * aux;
+    aux=pLista;
+   if (listaVacia(aux))
+   {
+     printf("error!");
+   }else
+   {
+    printf("**LISTADO DE PERSONAS CON SOBRE PESO**\n");
+    while (aux!=NULL)
+    {
+        if (aux->datos.clasifIMC=='sobre peso')
+        {
+     printf("codSex:%c|IMC:%s|edad: %d| altura:%f| peso:%f|\n",aux->datos.codSex,aux->datos.clasifIMC,aux->datos.edad,aux->datos.altura,aux->datos.peso);
+        }
+         aux=aux->siguente;
+    }    
+  }  
+    
+}   
+void calcularPromedio(float pPeso,int pContador)
+{
+  float promedio;
+  promedio=(pPeso/pContador); 
+  printf("%f",promedio);
+}
+void contarTotalEncuestados(tLista* pLista)
+{
+   tLista*aux;
+   aux=pLista;
+   int contador=0;
+ if (listaVacia(aux))
+ {
+   printf("no hay elementos para contar");
+ }else{
+  
+   while (aux!=NULL)
+   {
+      contador++;
+      aux=aux->siguente;
+   } 
+    printf("\n*cantidad de encuestados:%d*\n",contador);
+ }
+} 
