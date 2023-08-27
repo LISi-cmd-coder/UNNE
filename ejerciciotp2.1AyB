@@ -1,0 +1,172 @@
+/*Ejercio 1-a Crear un tipo de dato tListaProductos para un nodo que permita almacenar los siguientes datos de un
+producto: codProducto, descripción, precio unitario. Luego, declarar un puntero a una variable de ese tipo,
+y crear el primer nodo de la lista a partir del ingreso de datos por teclado. Por último, mostrar los datos
+del primer nodo almacenado.*/
+/*Modificar el ejercicio 1 para que se puedan realizar todas las operaciones básicas para el manejo de una
+lista enlazada:
+a) Generar o inicializar la lista.  iniciarLista();
+b) Función para determinar si una lista está vacía.  bool listaVacia(tLista*);
+c) Insertar el primer producto (nodo) de la lista. void insertarPrimero( tListaProductos );
+d) Insertar un producto al principio de la lista. void insertarAdelante( tListaProductos );
+e) Eliminar el primer producto de la lista. void eliminarPrimero();
+f) Insertar un producto en una determinada posición dentro de la lista.  void insertarK( int k, tListaProductos);
+g) Eliminar un producto de una determinada posición de la lista. void eliminarK( int k, tListaProductos );
+h) Visualizar todos los datos de los productos que están en la lista*/// void mostrarElementos(tLista*);
+//insertar por parametro en otra funcion.
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#define max 20
+typedef char tString[max];
+
+typedef struct
+{
+   int codProducto;
+   tString descripcion;
+   float precioUni;
+} tListaProductos;
+
+typedef struct nodo
+{
+   tListaProductos datos;
+  struct nodo * siguente;
+}tLista;
+tLista  * lista;
+
+void iniciarLista();
+bool listaVacia(tLista*);
+//inserción  
+void insertarPrimero( tListaProductos );
+void insertarAdelante( tListaProductos );
+void insertarElemento( tListaProductos );
+void insertarK( int , tListaProductos);
+//vizualicación
+void mostrarElementos(tLista*);
+// eliminacion 
+void eliminarPrimero();
+void eliminarK( int );
+
+void ingresarDatos();
+
+tListaProductos data;
+
+char continuar;
+int main()
+{
+ 
+
+  
+
+ return 0;
+}
+
+void ingresarDatos()
+{
+  
+   printf(" mete codigo:");
+   scanf("%d",&data.codProducto);
+   strcpy(data.descripcion,"vaso");
+   printf(" mete precio: ");
+   scanf("%f",&data.precioUni);
+}
+void insertarPrimero( tListaProductos pProducto){
+//1er paso crear el nuevo nodo.
+ tLista * nuevoNodo; 
+ //2do paso asignar memoria
+ nuevoNodo=(tLista*)malloc(sizeof(tLista));
+ //3er paso igualar el dato del nodo creado al parametro
+ nuevoNodo->datos=pProducto;
+//apuntar el primer nodo a null.
+ nuevoNodo->siguente=NULL;
+//5 el nodo se agrega a la lista
+lista=nuevoNodo;
+ printf("codigo:%d||,descripcion:%s||,precio:%.2f||\n",nuevoNodo->datos.codProducto,nuevoNodo->datos.descripcion,nuevoNodo->datos.precioUni);
+}
+void iniciarLista()
+{
+   lista=NULL;
+   printf("lista iniciada\n");
+}
+
+bool listaVacia(tLista* pLista)
+{
+  return(pLista==NULL);
+}
+void insertarElemento( tListaProductos pProducto)
+{
+ if (listaVacia(lista))
+ {
+   insertarPrimero(pProducto);
+ }else
+ {
+   insertarAdelante(pProducto);
+ }
+}
+void insertarAdelante( tListaProductos pProducto)
+{
+tLista * nuevoNodo;
+nuevoNodo = (tLista*)malloc(sizeof(tLista));
+nuevoNodo->datos=pProducto;
+nuevoNodo->siguente=lista;
+lista=nuevoNodo;
+printf("codigo:%d,descripcion:%s,precio:%.2f\n",nuevoNodo->datos.codProducto,nuevoNodo->datos.descripcion,nuevoNodo->datos.precioUni);
+}
+void mostrarElementos(tLista* pLista)
+{
+   tLista*aux;
+   aux=pLista;
+ if (listaVacia(aux))
+ {
+   printf("no hay elementos para mostrar");
+ }else{
+   printf("\n*elementos de la lista*\n");
+   while (aux!=NULL)
+   {
+      printf("cod:%d,descripcion:%s,precio Unidad:%.2f||",aux->datos.codProducto,aux->datos.descripcion,aux->datos.precioUni);
+      aux=aux->siguente;
+   } 
+ }
+}
+
+void insertarK( int k, tListaProductos nuevoDato)
+{
+  tLista * nuevoNodo,* aux;
+  int i;
+  aux=lista;
+  for ( i = 1; i < k-1; i++)
+  {
+   aux=aux->siguente;
+  }
+  
+  nuevoNodo=(tLista*)malloc(sizeof(tLista));
+  nuevoNodo->datos=nuevoDato; 
+  nuevoNodo->siguente=aux->siguente;
+  aux->siguente=nuevoNodo;
+  printf("Elemento insertado en la posicion %d!\n", k);
+
+}
+void eliminarPrimero()
+{
+  tLista*nodoSupr;
+  nodoSupr=lista;
+  lista=lista->siguente;
+  free(nodoSupr);
+  nodoSupr=NULL;
+
+}
+void eliminarK( int k )
+{
+  tLista * nodoEliminar, *aux;
+  int i;
+  aux=lista;
+  for ( i = 1; i < k-1; i++)
+  {
+    aux=aux->siguente;
+  }
+  nodoEliminar=aux->siguente;
+  aux->siguente=nodoEliminar->siguente;
+  free(nodoEliminar);
+  nodoEliminar=NULL;
+  
+}
